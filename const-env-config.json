@@ -1,0 +1,32 @@
+{
+    "dev":{
+        "endpoint":"http://localhost:8090",
+        "gw_endpoint":"http://localhost:8090",
+        "publicPath":"/",
+        "env":"dev"
+    },
+    "stage":{
+        "endpoint":"http://172.16.235.243:8090",
+        "gw_endpoint":"http://172.16.235.243:8090",
+        "publicPath":"/",
+        "env":"test"
+    },
+    "pre":{
+        "endpoint":"http://172.16.235.243:8090",
+        "gw_endpoint":"http://172.16.235.243:8090",
+        "publicPath":"/",
+        "env":"pre"
+    },
+    "prod":{
+        "endpoint":"http://172.16.235.243:8090",
+        "gw_endpoint":"http://172.16.235.243:8090",
+        "publicPath":"/",
+        "env":"prod"
+    },
+    "default":{
+        "endpoint":"http://172.16.235.243:8090",
+        "gw_endpoint":"http://172.16.235.243:8090",
+        "publicPath":"/",
+        "env":"default"
+    }
+}
