@@ -50,4 +50,6 @@ export default {
   'menu.editor.koni': '拓扑编辑器',
   'menu.company': '公司信息',
   'menu.organization': '组织结构',
+  'menu.application': '项目信息',
+  'menu.userInfo': '用户信息',
 };

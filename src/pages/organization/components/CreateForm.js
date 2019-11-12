@@ -17,7 +17,7 @@ const renderOptions = data => {
 };
 
 const CreateForm = Form.create()((props) => {
-  const { title, record = {}, parentId = 0, modalVisible, form, handleAdd, handleModal, handleModified, applicationData, selectOptionHandle, configDataArray, clusterArray, selectClusterHandle, brokerArray } = props;
+  const { title, record = {}, modalVisible, form, handleAdd, handleModal, handleModified, parentRecord={}} = props;
 
   const formItemLayout = {
     labelCol: {
@@ -38,13 +38,21 @@ const CreateForm = Form.create()((props) => {
         fieldsValue.id = record.id;
         handleModified(fieldsValue);
       } else {
-        fieldsValue.parentId = parentId;
+        fieldsValue.parentId = !!parentRecord.id ? parentRecord.id : 0;
         handleAdd(fieldsValue);
       }
     });
   };
+
+  const orgLever = !!record.orgLevel ? record.orgLevel : (!!parentRecord.orgLevel ? parentRecord.orgLevel + 1 : 1);
+
   return (
     <Modal width={'50%'} title={title} visible={modalVisible} onOk={okHandle} onCancel={() => handleModal()} destroyOnClose={true}>
+      <FormItem {...formItemLayout} label="上级组织：">
+        {form.getFieldDecorator('parentOrg', {
+          initialValue: !!parentRecord.orgName ? parentRecord.orgName : '',
+        })(<Input disabled />)}
+      </FormItem>
       <FormItem {...formItemLayout} label="组织名称：">
         {form.getFieldDecorator('orgName', {
           initialValue: record.orgName,
@@ -71,8 +79,8 @@ const CreateForm = Form.create()((props) => {
 
       <FormItem {...formItemLayout} label="所在层级：">
         {form.getFieldDecorator('orgLevel', {
-          initialValue: record.orgLevel,
-        })(<Input placeholder="所在层级" />)}
+          initialValue: orgLever,
+        })(<Input readOnly placeholder="所在层级" />)}
       </FormItem>
     </Modal>
   );

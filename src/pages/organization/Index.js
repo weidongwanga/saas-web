@@ -4,6 +4,7 @@ import { PageHeaderWrapper } from '@ant-design/pro-layout';
 import { Table, Card, Row, Col, Button, message } from 'antd';
 import styles from './style.less';
 import CreateForm from './components/CreateForm';
+import { Radio } from 'antd-mobile';
 
 const ORGANIZATION = 'organization';
 const mapStateToProps = state => {
@@ -42,6 +43,8 @@ const mapDispatchToProps = dispatch => {
 class Organization extends PureComponent {
   state={
     modalVisible: false,
+    selectedRowKeys: [],
+    selectedRecords: {},
   }
 
   constructor() {
@@ -80,34 +83,38 @@ class Organization extends PureComponent {
   handleModalVisible = (flag, title, record = {}) => {
     title = title || this.state.title;
 
+    if (!!record.id || !flag) {
+      this.setState({
+        selectedRowKeys: [],
+        selectedRecords: {},
+      });
+    }
+
     this.setState({
       title: title,
       record: record,
       modalVisible: !!flag,
     });
   };
+  
 
-  onExpandedRowRender = (expended, record) => {
-    // subRowAddCallback(record.id);
-    const expandedRowColumns = [
-        { title: '组织名称', dataIndex: 'orgName', key: 'orgName' },
-        { title: '组织编码', dataIndex: 'orgCode', key: 'orgCode' },
-      ];
-
-    return <Fragment>
-    {/* <Form layout="inline">{subRowButtons}</Form> */}
-    <Table
-      columns={expandedRowColumns}
-      dataSource={[]}
-      bordered
-      style={{"margin-right":20}}
-      pagination={false}
-    />
-  </Fragment>
-  };
+  onSelectRows = (selectedRowKeys, selectedRows)  => {
+      if (selectedRowKeys.length === 0) {
+        this.setState({
+          selectedRowKeys: [],
+          selectedRecords: {},
+        });
+      }
+      const selectedRowKeyLast = selectedRowKeys[selectedRowKeys.length - 1]
+      this.setState({
+        selectedRowKeys: [selectedRowKeyLast],
+        selectedRecords: selectedRows[selectedRows.length - 1],
+      });
+  }
 
   renderTableList = () => {
     const { data, pagination, loading } = this.props;
+
     const columns = [
         { title: '组织名称', dataIndex: 'orgName', key: 'orgName' },
         { title: '组织编码', dataIndex: 'orgCode', key: 'orgCode' },
@@ -116,7 +123,7 @@ class Organization extends PureComponent {
           render: (text, record) => (
             <div>
               <a
-                href="javascript:void(0)"
+                // href="javascript:void(0)"
                 onClick={() => this.handleModalVisible(true, '修改', record)}
               >
                 修改
@@ -125,25 +132,35 @@ class Organization extends PureComponent {
           ),
         }
       ];
+    
+    const  rowSelection = {
+        selections: true,
+        onChange: this.onSelectRows,
+        selectedRowKeys: this.state.selectedRowKeys,
+        hideDefaultSelections: true,
+        selections: [],
+        // type: 'radio',
+      }
 
     const standardProp = {
       rowKey: 'id',
       loading,
       dataSource: data,
       columns,
-      pagination: { pagination },
+      pagination: 'disable' ,
       //   onChange: this.tableChangeHandle
     };
-    return <Table {...standardProp} expandedRowRender={this.onExpandedRowRender} />;
+    return <Table {...standardProp} rowSelection={rowSelection}/>;
   };
 
   render() {
-    const {modalVisible, record} = this.state;
+    const {modalVisible, record, selectedRecords} = this.state;
 
     const crateFormProps = {
       record,
       handleModal: this.handleModalVisible,
       handleAdd: this.handleAddOrg,
+      parentRecord: selectedRecords,
     }
 
     return (

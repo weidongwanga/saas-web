@@ -123,6 +123,18 @@ export default {
               component: './Organization',
             },
             {
+              path: '/application',
+              name: 'application',
+              icon: 'smile',
+              component: './Application',
+            },
+            // {
+            //   path: '/userinfo',
+            //   name: 'userInfo',
+            //   icon: 'smile',
+            //   component: './UserInfo',
+            // },
+            {
               path: '/admin',
               name: 'admin',
               icon: 'crown',

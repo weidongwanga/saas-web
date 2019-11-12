@@ -27,7 +27,7 @@ const Model = {
         queryPage(state, action) {
             return {
               ...state,
-              data: action.payload && action.payload.data ? action.payload.data.records : [],
+              data: action.payload && action.payload.data ? action.payload.data : [],
               pagination: {
                 current: action.payload && action.payload.data ? action.payload.data.current : 1,
                 total: action.payload && action.payload.data ? action.payload.data.total : 0,

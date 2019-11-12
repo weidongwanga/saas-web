@@ -34,10 +34,6 @@ const checkStatus = response => {
       if (content.code === 'E100301') {
         window.location.href = content.ssoLoginUrl; // 为获取到权限将跳转至SSO登录页
       }
-
-      if (content.success === false) {
-        message.warning(content.message, 2, () => { });
-      }
     });
 };
 
