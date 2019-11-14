@@ -33,7 +33,7 @@ class StandardSearchForm extends PureComponent {
     const type = formItem.type.toLowerCase();
     switch (type) {
       case 'input':
-        return <Input placeholder="请输入" style={{ width: '100%' }} />;
+        return <Input placeholder="" style={{ width: '100%' }} />;
         break;
       case 'select':
         return (

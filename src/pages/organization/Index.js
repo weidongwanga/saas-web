@@ -1,7 +1,7 @@
 import React, { PureComponent, Fragment } from 'react';
 import { connect } from 'dva';
 import { PageHeaderWrapper } from '@ant-design/pro-layout';
-import { Table, Card, Row, Col, Button, message } from 'antd';
+import { Table, Card, Row, Col, Button, message, Divider } from 'antd';
 import styles from './style.less';
 import CreateForm from './components/CreateForm';
 import { Radio } from 'antd-mobile';
@@ -45,6 +45,7 @@ class Organization extends PureComponent {
     modalVisible: false,
     selectedRowKeys: [],
     selectedRecords: {},
+    expandRow: false,
   }
 
   constructor() {
@@ -148,10 +149,12 @@ class Organization extends PureComponent {
       dataSource: data,
       columns,
       pagination: 'disable' ,
+
       //   onChange: this.tableChangeHandle
     };
     return <Table {...standardProp} rowSelection={rowSelection}/>;
   };
+
 
   render() {
     const {modalVisible, record, selectedRecords} = this.state;
@@ -172,7 +175,7 @@ class Organization extends PureComponent {
               <Col md={8} sm={24}>
                 <Button icon="plus" type="primary" onClick={() => this.handleModalVisible(true)}>
                   添加
-              </Button>
+                </Button>
               </Col>
             </Row>
             {this.renderTableList()}

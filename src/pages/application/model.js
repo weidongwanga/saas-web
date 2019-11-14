@@ -8,28 +8,28 @@ const Model = {
     },
     effects: {
         *fetch({ payload }, { call, put }) {
-            const response = yield call(pageSearch,payload);
+            const response = yield call(pageSearch, payload);
             yield put({
               type: 'queryPage',
               payload: response,
             });
           },
-        // *add({payload, callback}, {call, put}) {
-        //     const response = yield call(add, payload);
-        //     yield put({
-        //       type: 'addInfo',
-        //       payload: response,
-        //     });
-        //     if (callback) callback(response);
-        //   },
-        //   *modified({payload, callback}, {call, put}) {
-        //     const response = yield call(modified, payload);
-        //     yield put({
-        //       type: 'modifiedInfo',
-        //       payload: response,
-        //     });
-        //     if (callback) callback(response);
-        //   },
+        *add({payload, callback}, {call, put}) {
+            const response = yield call(add, payload);
+            yield put({
+              type: 'addInfo',
+              payload: response,
+            });
+            if (callback) callback(response);
+          },
+          *modified({payload, callback}, {call, put}) {
+            const response = yield call(modified, payload);
+            yield put({
+              type: 'modifiedInfo',
+              payload: response,
+            });
+            if (callback) callback(response);
+          },
     },
     reducers: {
         queryPage(state, action) {

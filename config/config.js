@@ -102,14 +102,14 @@ export default {
           routes: [
             {
               path: '/',
-              redirect: '/welcome',
+              redirect: '/application',
             },
-            {
-              path: '/welcome',
-              name: 'welcome',
-              icon: 'smile',
-              component: './Welcome',
-            },
+            // {
+            //   path: '/welcome',
+            //   name: 'welcome',
+            //   icon: 'smile',
+            //   component: './Welcome',
+            // },
             {
               path: '/company',
               name: 'company',
@@ -128,19 +128,19 @@ export default {
               icon: 'smile',
               component: './Application',
             },
-            // {
-            //   path: '/userinfo',
-            //   name: 'userInfo',
-            //   icon: 'smile',
-            //   component: './UserInfo',
-            // },
             {
-              path: '/admin',
-              name: 'admin',
-              icon: 'crown',
-              component: './Admin',
-              authority: ['admin'],
+              path: '/userinfo',
+              name: 'userInfo',
+              icon: 'smile',
+              component: './UserInfo',
             },
+            // {
+            //   path: '/admin',
+            //   name: 'admin',
+            //   icon: 'crown',
+            //   component: './Admin',
+            //   authority: ['admin'],
+            // },
             {
               component: './404',
             },

@@ -1,7 +1,7 @@
 import React, { PureComponent } from 'react';
 import { connect } from 'dva';
 import moment from 'moment';
-import { Table, Card, Row, Col, Button, message } from 'antd';
+import { Table, Card, Row, Col, Button, message, Divider } from 'antd';
 import styles from './style.less';
 import CreateForm from './components/CreateForm';
 import StandardSearchForm from '@/components/StandardSearchForm';
@@ -156,6 +156,18 @@ class UserInfo extends PureComponent {
                       onClick={() => this.handleModalVisible(true, '修改', record)}
                     >
                       修改
+                    </a>
+                    <Divider type="vertical" />
+                    <a
+                      onClick={() => this.handleModalVisible(true, '修改', record)}
+                    >
+                      账号
+                    </a>
+                    <Divider type="vertical" />
+                    <a
+                      onClick={() => this.handleModalVisible(true, '修改', record)}
+                    >
+                      角色
                     </a>
                   </div>
                 ),
