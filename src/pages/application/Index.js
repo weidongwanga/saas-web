@@ -6,6 +6,9 @@ import styles from './style.less';
 import CreateForm from './components/CreateForm';
 import StandardSearchForm from '@/components/StandardSearchForm';
 
+import { Menu, Item, contextMenu  } from 'react-contexify';
+import 'react-contexify/dist/ReactContexify.min.css';
+
 const APPLICATION = 'application';
 const mapStateToProps = state => {
     const application = state[APPLICATION];
@@ -15,6 +18,27 @@ const mapStateToProps = state => {
         loading: state.loading.effects[`${APPLICATION}/fetch`],
     };
 }
+
+const MyAwesomeMenu = ((props) => {
+    const{onClick, id} = props;
+    const onShow = () => {
+        console.log('show');
+    }
+
+    const onHiden = () => {
+        console.log('hide');
+    }
+
+    const change =(e) => {
+        console.log(e);
+    }
+    return (
+    <Menu id="menu_id" onShown={onShow} onHidden={onHiden}>
+      <Item onClick={() => onClick(id)}>显示</Item>
+      <Item onClick={() => onClick(id)}>修改</Item>
+   </Menu>
+   )
+});
 
 const mapDispatchToProps = dispatch => {
     return {
@@ -51,6 +75,7 @@ const mapDispatchToProps = dispatch => {
 class Application extends PureComponent {
     state = {
         formValues: {},
+        recordId: 0,
     }
 
     constructor() {
@@ -60,6 +85,10 @@ class Application extends PureComponent {
             size: 10,
         };
         this.tableChangeHandle = this.tableChangeHandle.bind(this);
+    }
+
+    onClick = (id) => {
+        console.log(id);
     }
 
     handleSearch = (formValues = {}) => {
@@ -131,6 +160,8 @@ class Application extends PureComponent {
         this.handleSearch(params);
       }
 
+    
+
     renderTableList = () => {
         const { data, pagination, loading } = this.props;
         const columns = [
@@ -154,6 +185,7 @@ class Application extends PureComponent {
                     >
                       修改
                     </a>
+                    
                   </div>
                 ),
             }
@@ -166,8 +198,24 @@ class Application extends PureComponent {
             columns,
             pagination,
             onChange: this.tableChangeHandle,
+            
         };
-        return <Table {...standardProp} />;
+        return <Table {...standardProp} 
+        onRow={record => {
+            return {
+              onContextMenu: event => {
+                event.preventDefault();
+                contextMenu.show({
+                    id: 'menu_id',
+                    event: event,
+                });
+                this.setState({
+                    recordId: record.id,
+                });
+              }
+            };
+          }}
+        />;
     };
 
     searchFormRender() {
@@ -194,6 +242,11 @@ class Application extends PureComponent {
             record,
         }
 
+        const menuProps = {
+            onClick: this.onClick,
+            id: this.state.recordId,
+        }
+
         return (
             <div>
                 <Card bordered={false}>
@@ -210,6 +263,7 @@ class Application extends PureComponent {
                     </div>
                 </Card>
                 <CreateForm {...crateFormProps} modalVisible={modalVisible} />
+                <MyAwesomeMenu  {...menuProps} />
             </div>
         );
     }

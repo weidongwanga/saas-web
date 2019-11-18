@@ -1,4 +1,4 @@
-import {pageSearch, addOrganization  } from './service'
+import {pageSearch, addOrganization, modified, deleteOrgs  } from './service'
 
 const Model = {
     namespace: 'organization',
@@ -18,6 +18,22 @@ const Model = {
           const response = yield call(addOrganization, payload);
           yield put({
             type: 'addOrganizationInfo',
+            payload: response,
+          });
+          if (callback) callback(response);
+        },
+        *modified({payload, callback}, {call, put}) {
+          const response = yield call(modified, payload);
+          yield put({
+            type: 'modifiedInfo',
+            payload: response,
+          });
+          if (callback) callback(response);
+        },
+        *delete({payload, callback}, {call, put}) {
+          const response = yield call(deleteOrgs, payload);
+          yield put({
+            type: 'deleteInfo',
             payload: response,
           });
           if (callback) callback(response);

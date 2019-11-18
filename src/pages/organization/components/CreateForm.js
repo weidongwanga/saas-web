@@ -62,7 +62,7 @@ const CreateForm = Form.create()((props) => {
               message: '请输入组织名称',
             },
           ],
-        })(<Input disabled={!!record.id} placeholder="组织名称" />)}
+        })(<Input placeholder="组织名称" />)}
       </FormItem>
 
       <FormItem {...formItemLayout} label="组织编码：">
@@ -76,7 +76,17 @@ const CreateForm = Form.create()((props) => {
           ],
         })(<Input placeholder="组织编码" />)}
       </FormItem>
-
+      <FormItem {...formItemLayout} label="显示排序：">
+        {form.getFieldDecorator('seq', {
+          initialValue: record.seq,
+          rules: [
+            {
+              required: true,
+              message: '请输入显示排序',
+            },
+          ],
+        })(<Input placeholder="显示排序" />)}
+      </FormItem>
       <FormItem {...formItemLayout} label="所在层级：">
         {form.getFieldDecorator('orgLevel', {
           initialValue: orgLever,

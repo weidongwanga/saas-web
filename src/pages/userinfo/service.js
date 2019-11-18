@@ -18,3 +18,15 @@ export async function modified(params) {
     body: params,
   });
 }
+
+export async function userAccountList(params) {
+  return request(`${APP_CONFIG.endpoint}/user/${params.id}/account/list`, {
+    method: 'POST',
+  });
+}
+
+export async function userOrgTree(params) {
+  return request(`${APP_CONFIG.endpoint}/user/${params.id}/organization/tree`, {
+    method: 'POST',
+  });
+}

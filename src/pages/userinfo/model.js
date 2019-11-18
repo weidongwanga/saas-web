@@ -1,4 +1,4 @@
-import {pageSearch, add, modified  } from './service'
+import {pageSearch, add, modified, userAccountList, userOrgTree  } from './service'
 
 const Model = {
     namespace: 'userManager',
@@ -26,6 +26,22 @@ const Model = {
             const response = yield call(modified, payload);
             yield put({
               type: 'modifiedInfo',
+              payload: response,
+            });
+            if (callback) callback(response);
+          },
+          *userAccountList({payload, callback}, {call, put}) {
+            const response = yield call(userAccountList, payload);
+            yield put({
+              type: 'userAccountListInfo',
+              payload: response,
+            });
+            if (callback) callback(response);
+          },
+          *userOrgTree({payload, callback}, {call, put}) {
+            const response = yield call(userOrgTree, payload);
+            yield put({
+              type: 'userOrgTreeInfo',
               payload: response,
             });
             if (callback) callback(response);

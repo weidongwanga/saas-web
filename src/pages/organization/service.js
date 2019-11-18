@@ -12,3 +12,16 @@ export async function addOrganization(params) {
   });
 }
 
+export async function modified(params) {
+  return request(`${APP_CONFIG.endpoint}/organization/modified`, {
+    method: 'POST',
+    body: params,
+  });
+}
+
+export async function deleteOrgs(params) {
+  return request(`${APP_CONFIG.endpoint}/organization/delete/${params.id}`, {
+    method: 'POST',
+  });
+}
+
