@@ -52,4 +52,5 @@ export default {
   'menu.organization': '组织结构',
   'menu.application': '项目信息',
   'menu.userInfo': '用户信息',
+  'menu.role': '角色信息',
 };

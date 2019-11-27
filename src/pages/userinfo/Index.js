@@ -55,7 +55,7 @@ const mapDispatchToProps = dispatch => {
             };
             dispatch(action);
         },
-        delete(params, callback)  {
+        delete(params, callback) {
             const action = {
                 type: `${USERMANAGER_}/delete`,
                 payload: params,
@@ -63,9 +63,17 @@ const mapDispatchToProps = dispatch => {
             };
             dispatch(action);
         },
-        userOrgTree(params, callback)  {
+        userOrgTree(params, callback) {
             const action = {
                 type: `${USERMANAGER_}/userOrgTree`,
+                payload: params,
+                callback,
+            };
+            dispatch(action);
+        },
+        saveUserOrg(params, callback) {
+            const action = {
+                type: `${USERMANAGER_}/saveUserOrg`,
                 payload: params,
                 callback,
             };
@@ -96,17 +104,17 @@ class UserInfo extends PureComponent {
 
     handleSearch = (formValues = {}) => {
         const params = {
-          current: this.defaultPagination.current,
-          size: this.defaultPagination.size,
-          ...formValues,
+            current: this.defaultPagination.current,
+            size: this.defaultPagination.size,
+            ...formValues,
         };
-    
+
         this.setState({
-          formValues: { ...formValues }
+            formValues: { ...formValues }
         });
-    
+
         this.props.fetch(params);
-      }
+    }
 
     componentDidMount() {
         this.handleSearch();
@@ -143,12 +151,32 @@ class UserInfo extends PureComponent {
         });
     }
 
-    handleDelete = () => {
+    handleSaveUserOrg = fields => {
         const {record} = this.state;
+        fields = {
+            userId: record.id,
+            ...fields,
+        }
+        this.props.saveUserOrg(fields, response => {
+            this.handleSearch(this.state.formValues);
+            if (response.success) {
+                message.success('修改成功', 1, () => { });
+            } else {
+                message.warning(response.message, 1, () => { });
+            }
+        });
+
+        this.setState({
+            orgModalVisible: false,
+        });
+    }
+
+    handleDelete = () => {
+        const { record } = this.state;
     }
 
     handleModifiedModalVisible = () => {
-        const {record} = this.state;
+        const { record } = this.state;
         this.handleModalVisible(true, '', record);
     }
 
@@ -163,10 +191,10 @@ class UserInfo extends PureComponent {
     };
 
     handleUserAccountModalVisible = () => {
-        const {record} = this.state;
+        const { record } = this.state;
         if (!this.state.accountModalVisible) {
             this.props.userAccountList(record, response => {
-                if (response.success) { 
+                if (response.success) {
                     this.setState({
                         userAccountList: response.data,
                     });
@@ -185,10 +213,15 @@ class UserInfo extends PureComponent {
     }]
 
     handleUserOrgModalVisible = () => {
-        const {record} = this.state;
+        const { record } = this.state;
         if (!this.state.orgModalVisible) {
+            this.setState({
+                userOrgTree: [],
+                selected: [],
+            });
+
             this.props.userOrgTree(record, response => {
-                if (response.success) { 
+                if (response.success) {
                     this.setState({
                         userOrgTree: response.data.orgTree,
                         selected: response.data.selected,
@@ -205,12 +238,12 @@ class UserInfo extends PureComponent {
     tableChangeHandle(pagination) {
         const { formValues } = this.state;
         const params = {
-          ...formValues,
-          ...pagination,
+            ...formValues,
+            ...pagination,
         };
-    
+
         this.handleSearch(params);
-      }
+    }
 
     renderTableList = () => {
         const { data, pagination, loading } = this.props;
@@ -221,32 +254,16 @@ class UserInfo extends PureComponent {
             { title: '手机', dataIndex: 'userPhone', key: 'userPhone' },
             { title: '邮箱', dataIndex: 'userMail', key: 'userMail', },
             { title: '状态', dataIndex: 'isActive', key: 'isActive', },
-            { title: '创建时间', dataIndex: 'createTime', key: 'createTime', 
+            {
+                title: '创建时间', dataIndex: 'createTime', key: 'createTime',
                 render: text => <span>{moment(text).format('YYYY-MM-DD HH:mm')}</span>,
             },
             { title: '创建人', dataIndex: 'createUser', key: 'createUser', },
-            { title: '修改时间', dataIndex: 'updateTime', key: 'updateTime', 
+            {
+                title: '修改时间', dataIndex: 'updateTime', key: 'updateTime',
                 render: text => <span>{text > 0 ? moment(text).format('YYYY-MM-DD HH:mm') : ''}</span>,
             },
             { title: '修改人', dataIndex: 'updateUser', key: 'updateUser', },
-            {
-                title: '操作', dataIndex: 'operate', key: 'operate',
-                render: (text, record) => (
-                  <div>
-                    <a
-                      onClick={() => this.handleModalVisible(true, '修改', record)}
-                    >
-                      修改
-                    </a>
-                    <Divider type="vertical" />
-                    <a
-                      onClick={() => this.handleModalVisible(true, '修改', record)}
-                    >
-                      角色
-                    </a>
-                  </div>
-                ),
-            }
         ];
 
         const standardProp = {
@@ -257,18 +274,18 @@ class UserInfo extends PureComponent {
             pagination,
             onChange: this.tableChangeHandle,
         };
-        return <Table {...standardProp} 
-            onRow = {record => {
+        return <Table {...standardProp}
+            onRow={record => {
                 return {
-                  onContextMenu: event => {
-                    event.preventDefault();
-                    RightOptShow.showOpt(event, menuId);
-                    this.setState({
-                        record: record,
-                    });
-                  }
+                    onContextMenu: event => {
+                        event.preventDefault();
+                        RightOptShow.showOpt(event, menuId);
+                        this.setState({
+                            record: record,
+                        });
+                    }
                 };
-              }}
+            }}
         />;
     };
 
@@ -286,7 +303,7 @@ class UserInfo extends PureComponent {
         return <StandardSearchForm {...searchProp} />
     }
 
-    
+
 
     render() {
         const { modalVisible, record, accountModalVisible, userAccountList, orgModalVisible, userOrgTree, selected } = this.state;
@@ -330,6 +347,7 @@ class UserInfo extends PureComponent {
             handleModal: this.handleUserOrgModalVisible,
             orgTree: userOrgTree,
             selected: selected,
+            handleSave: this.handleSaveUserOrg,
         }
 
         return (
@@ -349,8 +367,8 @@ class UserInfo extends PureComponent {
                 </Card>
                 <CreateForm {...crateFormProps} modalVisible={modalVisible} />
                 <UserAccountList {...userAccountProps} modalVisible={accountModalVisible} />
-                <RightOptList menuList = {rightOptOps} />
-                <UserOrganization {...userOrgProps}/>
+                <RightOptList menuList={rightOptOps} />
+                <UserOrganization {...userOrgProps} />
             </div>
         );
     }

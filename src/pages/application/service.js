@@ -18,3 +18,7 @@ export async function modified(params) {
     body: params,
   });
 }
+
+export async function list(params) {
+  return request(`${APP_CONFIG.endpoint}/application/list?${stringify(params)}`);
+}

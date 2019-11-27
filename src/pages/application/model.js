@@ -1,4 +1,4 @@
-import {pageSearch, add, modified  } from './service'
+import {pageSearch, add, modified,list  } from './service'
 
 const Model = {
     namespace: 'application',
@@ -26,6 +26,14 @@ const Model = {
             const response = yield call(modified, payload);
             yield put({
               type: 'modifiedInfo',
+              payload: response,
+            });
+            if (callback) callback(response);
+          },
+          *list({payload, callback}, {call, put}) {
+            const response = yield call(list, payload);
+            yield put({
+              type: 'listInfo',
               payload: response,
             });
             if (callback) callback(response);

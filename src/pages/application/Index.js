@@ -21,19 +21,9 @@ const mapStateToProps = state => {
 
 const MyAwesomeMenu = ((props) => {
     const{onClick, id} = props;
-    const onShow = () => {
-        console.log('show');
-    }
 
-    const onHiden = () => {
-        console.log('hide');
-    }
-
-    const change =(e) => {
-        console.log(e);
-    }
     return (
-    <Menu id="menu_id" onShown={onShow} onHidden={onHiden}>
+    <Menu id="menu_id" >
       <Item onClick={() => onClick(id)}>显示</Item>
       <Item onClick={() => onClick(id)}>修改</Item>
    </Menu>

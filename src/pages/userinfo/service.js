@@ -30,3 +30,9 @@ export async function userOrgTree(params) {
     method: 'POST',
   });
 }
+
+export async function saveUserOrg(params) {
+  return request(`${APP_CONFIG.endpoint}/user/org/${params.userId}/${params.orgId}`, {
+    method: 'POST',
+  });
+}

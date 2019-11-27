@@ -216,7 +216,7 @@ class Organization extends PureComponent {
     const rightOptOps = [
       {
         id: 1,
-        title: '新增',
+        title: '添加子组织',
         icon: 'edit',
         handle: this.handleAddModalVisible,
       },
