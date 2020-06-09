@@ -87,11 +87,20 @@ class Role extends PureComponent {
     };
     this.tableChangeHandle = this.tableChangeHandle.bind(this);
     this.handleSearch = this.handleSearch.bind(this);
+    
   }
 
   componentDidMount() {
     const params = {}
     this.handleSearch();
+    this.props.fetchApplicationList({}, response => {
+      if (response.success) {
+        const applicationData = selectData(response.data, "id", "applicationName");
+        this.setState({
+          applicationData: [...applicationData],
+        });
+      }
+    })
   }
 
   handleSearch = (formValues = {}) => {
@@ -174,31 +183,8 @@ tableChangeHandle(pagination) {
     })
   }
 
-  renderOptions = data => {
-    if (!data || data.length == 0) {
-        return;
-    }
-    const options = data.map((item, index) => (
-        <Option key={index} value={item.id}>
-            {item.applicationName}
-        </Option>
-    ));
-
-    this.setState({
-        applicationOptions: [...options],
-    });
-};
-
   handleSearchApplication = (params) => {
-    this.props.fetchApplicationList(params, response => {
-      if (response.success) {
-        this.renderOptions(response.data);
-        const applicationData = selectData(response.data, "id", "applicationName");
-        this.setState({
-          applicationData: [...applicationData],
-        });
-      }
-    })
+    
   }
 
   handleModifiedModalVisible = () => {
@@ -226,7 +212,6 @@ tableChangeHandle(pagination) {
 
   handleModalVisible = (flag, title, record = {}) => {
     title = title || this.state.title;
-    this.handleSearchApplication();
     this.setState({
       title: title,
       record: record,
@@ -239,6 +224,7 @@ tableChangeHandle(pagination) {
 
     const columns = [
       { title: '角色名称', dataIndex: 'roleName', key: 'roleName' },
+      { title: '所属项目', dataIndex: 'applicationId', key: 'applicationId'},
       { title: '角色描述', dataIndex: 'roleDesc', key: 'roleDesc' },
     ];
 
@@ -267,11 +253,11 @@ tableChangeHandle(pagination) {
 
 
   render() {
-    const { modalVisible, record, parentRecord, applicationOptions } = this.state;
+    const { modalVisible, record, parentRecord, applicationData } = this.state;
 
     const crateFormProps = {
       record,
-      applicationOptions,
+      applicationData,
       handleModal: this.handleModalVisible,
       handleAdd: this.handleAddOrg,
       parentRecord: parentRecord,

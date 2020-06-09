@@ -53,4 +53,6 @@ export default {
   'menu.application': '项目信息',
   'menu.userInfo': '用户信息',
   'menu.role': '角色信息',
+  'menu.menu': '菜单信息',
+  'menu.data': '数据信息',
 };

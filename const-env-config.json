@@ -1,7 +1,7 @@
 {
     "dev":{
-        "endpoint":"http://localhost:8090",
-        "gw_endpoint":"http://localhost:8090",
+        "endpoint":"http://192.168.3.101:8090",
+        "gw_endpoint":"http://192.168.3.101:8090",
         "publicPath":"/",
         "env":"dev"
     },

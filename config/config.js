@@ -140,6 +140,18 @@ export default {
               icon: 'smile',
               component: './Role',
             },
+            {
+              path: '/menu',
+              name: 'menu',
+              icon: 'smile',
+              component: './Menu',
+            },
+            {
+              path: '/data',
+              name: 'data',
+              icon: 'smile',
+              component: './Data',
+            },
             // {
             //   path: '/admin',
             //   name: 'admin',
